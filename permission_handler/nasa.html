@@ -8,3 +8,25 @@
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" width="40px"/>&nbsp;&nbsp;&nbsp;
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" width="40px"/>&nbsp;&nbsp;&nbsp;
 </p>
+
+void simulateMicrophoneFunctionality() async {
+  var status = await Permission.microphone.status;
+
+  if (status.isGranted) {
+    setState(() {
+      isMicrophoneAllowed = true;
+    });
+  } else {
+    status = await Permission.microphone.request();
+
+    if (status.isGranted) {
+      setState(() {
+        isMicrophoneAllowed = true;
+      });
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
+  print("Simulating microphone functionality...");
+}

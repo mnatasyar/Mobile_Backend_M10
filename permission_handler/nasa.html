@@ -30,3 +30,32 @@ void simulateMicrophoneFunctionality() async {
 
   print("Simulating microphone functionality...");
 }
+
+bool isMicrophoneRunning = false;
+
+void simulateMicrophoneFunctionality() async {
+  var status = await Permission.microphone.status;
+
+  if (status.isGranted) {
+    setState(() {
+      isMicrophoneAllowed = true;
+      isMicrophoneRunning = !isMicrophoneRunning; // Toggle microphone state
+    });
+  } else {
+    status = await Permission.microphone.request();
+
+    if (status.isGranted) {
+      setState(() {
+        isMicrophoneAllowed = true;
+        isMicrophoneRunning = !isMicrophoneRunning; // Toggle microphone state
+      });
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
+  print("Microphone is ${isMicrophoneRunning ? 'running' : 'stopped'}...");
+
+  // Optional: You can perform microphone-related actions here based on isMicrophoneRunning value.
+}
+
